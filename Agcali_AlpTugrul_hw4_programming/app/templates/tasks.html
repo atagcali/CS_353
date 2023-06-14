@@ -1,0 +1,113 @@
+<html>
+<head>
+    <title>Task List</title>
+    <style>
+        table {
+            border-collapse: separate;
+            border-spacing: 10px 0;
+        }
+        th, td {
+            padding: 0 15px;
+        }
+        .main-btn {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            padding: 10px 20px;
+            margin-right: 10px;
+            text-decoration: none;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .main-btn:hover {
+            background-color: #0056b3;
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    {% if message is defined and message %}
+		<div class="alert alert-warning">{{ message }}</div>
+	{% endif %}
+    <h1>Task List</h1>
+    <a href="{{ url_for('edit_add_task', user_id=user_id) }}" class="main-btn">Add Task</a>
+    <a href="{{ url_for('analysis', user_id=user_id) }}" class="main-btn">Analysis</a>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Deadline</th>
+                <th>Creation Time</th>
+                <th>Done Time</th>
+                <th>User ID</th>
+                <th>Task Type</th>
+                <th>Actions</th>
+                <th>Change Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td>{{ task['id'] }}</td>
+                <td>{{ task['title'] }}</td>
+                <td>{{ task['description'] }}</td>
+                <td>{{ task['status'] }}</td>
+                <td>{{ task['deadline'] }}</td>
+                <td>{{ task['creation_time'] }}</td>
+                <td>{{ task['done_time'] }}</td>
+                <td>{{ task['user_id'] }}</td>
+                <td>{{ task['task_type'] }}</td>
+                <td>
+                    <a href="{{ url_for('edit_add_task', task_id=task['id'], user_id=task['user_id']) }}" class="btn btn-primary">Edit</a>
+                    <form action="{{ url_for('delete_task', task_id=task['id'], user_id=task['user_id']) }}" method="post">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="{{ url_for('change_status', task_id=task['id'], user_id=task['user_id'], current=task['status']) }}" method="post">
+                        <button type="submit" name="status">{% if task['status'] == 'Todo' %}Finish{% else %}Todo{% endif %}</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h2>Completed Tasks</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Deadline</th>
+                <th>Creation Time</th>
+                <th>Done Time</th>
+                <th>User ID</th>
+                <th>Task Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in completed_tasks%}
+                <tr>
+                    <td>{{ task['id'] }}</td>
+                    <td>{{ task['title'] }}</td>
+                    <td>{{ task['description'] }}</td>
+                    <td>{{ task['status'] }}</td>
+                    <td>{{ task['deadline'] }}</td>
+                    <td>{{ task['creation_time'] }}</td>
+                    <td>{{ task['done_time'] }}</td>
+                    <td>{{ task['user_id'] }}</td>
+                    <td>{{ task['task_type'] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

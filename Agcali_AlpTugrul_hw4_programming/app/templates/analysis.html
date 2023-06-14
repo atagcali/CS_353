@@ -1,0 +1,41 @@
+<html>
+<head>
+    <title>Task List</title>
+</head>
+<body>
+    <h1>Analysis</h1>
+
+    <h2>1. Tasks completed after their deadlines</h2>
+    <ul>
+        {% for task in tasks_completed_after_deadline %}
+        <li>{{ task.title }} - Latency: {{ task.latency }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>2. Average task completion time</h2>
+    <ul>
+        <li> Time : {{ avg_completion_time }}</li>
+    </ul>
+
+    <h2>3. Completed tasks per task type (descending order)</h2>
+    <ul>
+        {% for task_type in completed_tasks_per_type %}
+        <li>{{ task_type.type }} : {{ task_type.count }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>4. Uncompleted tasks (increasing order of deadlines)</h2>
+    <ul>
+        {% for task in uncompleted_tasks %}
+        <li>{{ task.title }} - Deadline: {{ task.deadline }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>5. Top 2 completed tasks that took the most time (descending order)</h2>
+    <ul>
+        {% for task in top_2_tasks %}
+        <li>{{ task.title }} - Completion time: {{ task.completion_time }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
